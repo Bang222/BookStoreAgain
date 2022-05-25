@@ -1,0 +1,53 @@
+﻿@model List<BookStore.Models.Book>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<form asp-action="list" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Find by name: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]"/>
+            <input type="submit" value="Search" class="btn btn-default" /> 
+            <a asp-action="list">Back to Full List</a>
+        </p>
+    </div>
+</form>
+<h1>@ViewBag.message </h1>
+<div class="container">
+    <div class="row">
+        @for (var i = 0; i < @Model.Count; i++)
+        {
+            <div class="col-md-4 col-6">
+                <div class="card" style="width: 18rem;">
+                    <img src=@(Model[i].ImgUrl) class="card-img-top" alt="Error">
+                    <div class="card-body">
+                        <h5 class="card-title">Title :  @Model[i].Title</h5> 
+                        <h5 class="card-title">Author:  @Model[i].Author</h5>
+                        <h5 class="card-title">Price :  @Model[i].Price</h5>
+                        <div class="row pl-2">
+                        </div>
+                        <a href=@("../Books/Details/"+Model[i].Isbn) class="btn btn-primary">Detail</a>
+                        <a asp-action="AddToCart" asp-route-isbn="@Model[i].Isbn" class="btn btn-primary"
+                       onclick="alert('The book has been added to the cart ')">Add to cart</a>
+                    </div>
+                </div>
+            </div>
+        }
+        <div style="display:flex;text-align:center;justify-content:center">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <a class="page-link"asp-route-itemid="@ViewBag.Previus">Previus</a>
+                    @for (var i = 0; i < @ViewBag.numberOfPages; i++)
+                    {
+                        var style = (ViewBag.currentPage == @i) ? "active" : "";
+                        <li class="page-item @style">
+                            <a class="page-link" asp-route-id="@i">@(i+1)</a>
+                        </li>
+                    }
+                     <a class="page-link"asp-route-itemid="@ViewBag.Next">Next</a>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+

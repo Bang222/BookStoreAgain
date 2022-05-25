@@ -1,0 +1,83 @@
+﻿@model IEnumerable<BookStore.Models.OrderDetail>
+
+@{
+    ViewData["Title"] = "Manage Order";
+}
+
+<h1>Manage Order by Customer</h1>
+
+@if(Model.Count() > 0)
+{
+    int stt = 1;
+    double total = 0;
+    <table class="table">
+    <thead>
+        <tr>
+            <th>#</th>         
+            <th>
+                @Html.DisplayNameFor(model => model.Order.User.UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Order.User.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Book.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Order.OrderDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Order.Total)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+                double priceItem = item.Book.Price*item.Quantity;
+                total = priceItem + total;
+                <tr>
+            <td>
+                @(stt++)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Order.User.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Order.User.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Book.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Order.OrderDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                @(Math.Round(priceItem,1))
+            </td>
+            <td>
+            </td>
+        </tr>
+}
+<tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td>Total: @(Math.Round(total,1))</td>
+</tr>
+    </tbody>
+    </table>
+}
+else
+{
+    <p class="alert alert-danger">Cart null</p>
+}
